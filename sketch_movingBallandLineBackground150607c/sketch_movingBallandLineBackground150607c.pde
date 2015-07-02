@@ -37,12 +37,16 @@ void draw() {
     move =0;
   }
 
+
+// 判斷滑鼠事件
   if (mousePressed) {
     rect(mouseX-50+delta, mouseY-50+delta, 100, 100, 40, 20, 10, 10);
   } else {
     ellipse(mouseX, mouseY, 100, 100);
   }
 
+
+// 判斷鍵盤事件
   if (keyPressed) {
     if(key == 'e'){
     reset();
