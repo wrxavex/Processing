@@ -17,7 +17,7 @@ void setup() {
   //plays the movie over and over
   serial = new Serial(this, "COM1", 9600);
   theMov.loop(); 
-  timer = new Timer(5000);
+  timer = new Timer(5000);  //改為五秒
   timer.start();
 }
 
@@ -25,7 +25,7 @@ void draw() {
   
   image(theMov, 0,0);
   
-    if (timer.isFinished() || playing == 0) {
+    if (timer.isFinished() || playing == 0) {  // 改為計時結束 或播放中只需一個條件即可停止
     println("time up");
 	waiting = 1;
     RandomPlay();
