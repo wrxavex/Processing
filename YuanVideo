@@ -9,135 +9,134 @@ int clipfin = 0;        //片段結束點
 int playing;
 int waiting;
 int looppoint;
+int playcount;
 
 void setup() { 
   size(720, 480);
   background(0);
-  theMov = new Movie(this, "yuan.mov");
-  //plays the movie over and over
-  serial = new Serial(this, "COM1", 9600);
+  theMov = new Movie(this, "yuan.mov"); // 設定影片檔名為yuan.mov
+  serial = new Serial(this, "COM1", 9600); // 預設com port 為 com1
   theMov.loop(); 
-  timer = new Timer(5000);  //改為五秒
+  timer = new Timer(5000);  //計時初始值設為五秒
   timer.start();
 }
 
 void draw() { 
-  
-  image(theMov, 0,0);
-  
-    if (timer.isFinished() || playing == 0) {  // 改為計時結束 或播放中只需一個條件即可停止
+
+  image(theMov, 0, 0);
+
+  if (timer.isFinished() && playing == 0) {  // 計時結束後設定狀態為：等待中
     println("time up");
-	waiting = 1;
-    RandomPlay();
-    
-    }
-  
-  if ( theMov.time() > clipfin) {
-     println("loop");
-     theMov.jump(331);
-     clipfin = 345;
-     if(playing != 0){
-     timer.start();  
-     }
-     playing=0;
- 
-     
+    waiting = 1;
   }
-  
-  
-    
-  print("Playtime: ");
-  println(theMov.time());
-  print("Playing :");
-  println(playing);
+
+  if ( theMov.time() > clipfin) {  
+    println("loop");
+    theMov.jump(331);
+    clipfin = 345;
+    if (playing != 0) {
+      timer.start();
+    }
+    playing=0;
+  }
+
+
+//  print("Playtime: ");
+//  println(theMov.time());
+//  print("Playing :");
+//  println(playing);
+//  print("waiting:");
+//  println(waiting);
+//  print("isFinished:");
+//  println(timer.isFinished());
+//  print("playcount:");
+//  println(playcount);
   
 }
-
-
 
 void movieEvent(Movie m) {
   m.read();
 } 
 
 
+//  void serialEvent(Serial port){
+void keyPressed() {
 
-
-
-void serialEvent(Serial port){
-  //void keyPressed(){
-  
-  
-  if(waiting == 1 || playing == 0 ){
-  RandomPlay();
-  waiting=0;
+   if(waiting == 1 || playing == 0 || timer.isFinished() ) {
+    playing = 0;
+    waiting = 0;
+    RandomPlay();  
   }
-
 }
 
-
-void RandomPlay(){
-   int r = int(random(6))+1;
-   if (r==1 && playing ==0) {    
+void RandomPlay() {
+  playcount ++ ;
+  timer.start();
+  int r = int(random(6))+1;
+  if (r==1 && playing ==0) {    
     theMov.jump(86);
     clipfin = 161;
     playing = 1;
   }  
-  if (r==2 && playing ==0){
+  if (r==2 && playing ==0) {
     theMov.jump(162);
     clipfin = 167;
     playing = 2;
   }
-  if (r==3 && playing ==0){
+  if (r==3 && playing ==0) {
     theMov.jump(168);
     clipfin = 217;
     playing = 3;
   }
-  if (r==4 && playing ==0){
+  if (r==4 && playing ==0) {
     theMov.jump(218);
     clipfin = 311;
     playing = 4;
   }
-  if(r==5 && playing ==0){
+  if (r==5 && playing ==0) {
     theMov.jump(312);
     clipfin = 316;
     playing = 5;
   }
-  if(r==6 && playing ==0){
+  if (r==6 && playing ==0) {
     theMov.jump(317);
     clipfin = 336;
     playing = 6;
   }
-  if(r==7 && playing ==0){
+  if (r==7 && playing ==0) {
     theMov.jump(2);
     clipfin = 84;
     playing = 7;
   }
-
 }
 
 
 class Timer {
- 
+
   int savedTime; // When Timer started
   int totalTime; // How long Timer should last
-  
+
   Timer(int tempTotalTime) {
     totalTime = tempTotalTime;
   }
-  
+
   // Starting the timer
   void start() {
     // When the timer starts it stores the current time in milliseconds.
-    savedTime = millis(); 
+    savedTime = millis();
   }
-  
+
   // The function isFinished() returns true if 5,000 ms have passed. 
   // The work of the timer is farmed out to this method.
   boolean isFinished() { 
     // Check how much time has passed
     int passedTime = millis()- savedTime;
-    print("timer: ");
-    println(passedTime);
+    
+//    print("timer: ");
+//    println(passedTime);
+//    print("totalTime:");
+//    println(totalTime);
+    
     if (passedTime > totalTime) {
       return true;
     } else {
