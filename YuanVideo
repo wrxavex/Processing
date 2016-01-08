@@ -59,8 +59,8 @@ void movieEvent(Movie m) {
 } 
 
 
-//  void serialEvent(Serial port){
-void keyPressed() {
+void serialEvent(Serial port){ // 正式用
+// void keyPressed() { // 測試用
 
    if(waiting == 1 || playing == 0 || timer.isFinished() ) {
     playing = 0;
